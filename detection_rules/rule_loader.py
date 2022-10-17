@@ -239,6 +239,10 @@ class RuleCollection(BaseCollection):
         self.deprecated.name_map[rule.name] = rule
         self.deprecated.rules.append(rule)
 
+    def validation_check_for_correlations(self, rule: TOMLRule):
+        if rule.contents.data.correlations is not None:
+            assert rule.contents.data.threat is not None, f"Rule Name {rule.name} has correlations set without having threat set."
+
     def load_dict(self, obj: dict, path: Optional[Path] = None) -> Union[TOMLRule, DeprecatedRule]:
         # bypass rule object load (load_dict) and load as a dict only
         if obj.get('metadata', {}).get('maturity', '') == 'deprecated':
@@ -251,6 +255,7 @@ class RuleCollection(BaseCollection):
             contents = TOMLRuleContents.from_dict(obj)
             contents.set_version_lock(self._version_lock)
             rule = TOMLRule(path=path, contents=contents)
+            self.validation_check_for_correlations(rule)
             self.add_rule(rule)
             return rule
 
