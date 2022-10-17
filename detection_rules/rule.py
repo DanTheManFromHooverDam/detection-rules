@@ -178,6 +178,7 @@ class BaseRuleData(MarshmallowDataclassMixin, StackCompatMixin):
     actions: Optional[list]
     author: List[str]
     building_block_type: Optional[str]
+    correlations : Optional[List[definitions.UUIDString]]
     description: str
     enabled: Optional[bool]
     exceptions_list: Optional[list]

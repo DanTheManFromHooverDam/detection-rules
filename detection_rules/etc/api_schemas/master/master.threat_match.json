@@ -29,6 +29,14 @@
       "minimum": 1,
       "type": "number"
     },
+    "correlations": {
+      "items": {
+        "description": "UUIDString",
+        "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+        "type": "string"
+      },
+      "type": "array"
+    },
     "description": {
       "type": "string"
     },

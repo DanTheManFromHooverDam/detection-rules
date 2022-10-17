@@ -765,3 +765,20 @@ class TestRiskScoreMismatch(BaseRuleTest):
             err_msg = 'The following rules have mismatches between Severity and Risk Score field values:\n'
             err_msg += invalid_str
             self.fail(err_msg)
+
+class TestCorrelationsValidity(BaseRuleTest):
+    """Test that there are no rules where correlations is added without having the threat object set"""
+
+    def test_correlations_only_set_when_threat_set(self):
+        invalid_list = []
+        for rule in self.all_rules:
+            threat = rule.contents.data.threat or []
+            correlations = rule.contents.data.correlations or []
+            if correlations and not threat:
+                invalid_list.append(f'{self.rule_str(rule)}')
+
+        if invalid_list:    
+            invalid_str = '\n'.join(invalid_list)
+            err_msg = 'The following rules have the correlations field without having the threat field set:\n'
+            err_msg += invalid_str
+            self.fail(err_msg)
